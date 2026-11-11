@@ -1,0 +1,68 @@
+#!/bin/bash
+# SketchyBar: barra estilo Waybar integrada ao AeroSpace (criada em 2026-11-10)
+# Guia: ~/Obsidian/Projetos/Mac - Tiling WM (AeroSpace).md
+# Recarregar: sketchybar --reload
+
+PLUGIN_DIR="$CONFIG_DIR/plugins"
+
+# Cores (paleta Catppuccin Mocha, a mesma da borda do JankyBorders)
+BAR_COLOR=0xdd1e1e2e
+TEXT=0xffcdd6f4
+DIM=0x66cdd6f4
+ACCENT=0xff89b4fa
+PILL=0x33ffffff
+
+sketchybar --bar position=top height=32 blur_radius=20 color=$BAR_COLOR \
+                 padding_left=10 padding_right=10 shadow=off topmost=off
+
+default=(
+  icon.font="SF Pro:Semibold:14.0"
+  label.font="SF Pro:Semibold:13.0"
+  icon.color=$TEXT
+  label.color=$TEXT
+  padding_left=4
+  padding_right=4
+  icon.padding_left=4
+  icon.padding_right=4
+  label.padding_left=4
+  label.padding_right=4
+)
+sketchybar --default "${default[@]}"
+
+# ── Esquerda: workspaces do AeroSpace (clique para ir) ──
+sketchybar --add event aerospace_workspace_change
+
+for sid in $(aerospace list-workspaces --all </dev/null); do
+  sketchybar --add item space.$sid left \
+             --subscribe space.$sid aerospace_workspace_change front_app_switched \
+             --set space.$sid \
+                   label="$sid" \
+                   label.width=26 \
+                   label.align=center \
+                   icon.drawing=off \
+                   background.color=$PILL \
+                   background.corner_radius=6 \
+                   background.height=22 \
+                   background.drawing=off \
+                   click_script="aerospace workspace $sid </dev/null" \
+                   script="$PLUGIN_DIR/aerospace.sh $sid $ACCENT $TEXT $DIM"
+done
+
+# Separador + app em foco
+sketchybar --add item separador left \
+           --set separador label="│" label.color=$DIM icon.drawing=off \
+           --add item front_app left \
+           --set front_app icon.drawing=off script="$PLUGIN_DIR/front_app.sh" \
+           --subscribe front_app front_app_switched
+
+# ── Direita (o primeiro adicionado fica mais à direita) ──
+sketchybar --add item clock right \
+           --set clock update_freq=10 icon.drawing=off script="$PLUGIN_DIR/clock.sh" \
+           --add item battery right \
+           --set battery update_freq=60 icon.drawing=off script="$PLUGIN_DIR/battery.sh" \
+           --subscribe battery system_woke power_source_change \
+           --add item volume right \
+           --set volume icon.drawing=off script="$PLUGIN_DIR/volume.sh" \
+           --subscribe volume volume_change
+
+sketchybar --update

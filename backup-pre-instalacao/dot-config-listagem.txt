@@ -1,0 +1,6 @@
+total 0
+drwxr-xr-x@  5 joaoscacchetti  staff   160 10 nov 01:28 .
+drwxr-x---+ 43 joaoscacchetti  staff  1376 10 nov 23:18 ..
+drwxr-x--x   4 joaoscacchetti  staff   128 10 nov 01:28 gh
+drwxr-xr-x@  3 joaoscacchetti  staff    96 25 abr  2026 menus
+drwxr-xr-x   5 joaoscacchetti  staff   160 10 nov 22:41 rclone

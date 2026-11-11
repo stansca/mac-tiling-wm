@@ -1,0 +1,5 @@
+antigravity-cli
+google-chrome
+gstreamer-runtime
+keka
+wine-stable

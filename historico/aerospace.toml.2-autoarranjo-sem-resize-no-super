@@ -1,0 +1,187 @@
+# AeroSpace: tiling no estilo Hyprland (criado em 2026-11-10)
+# Modificador principal: Option (⌥), no papel da tecla Super do Hyprland.
+# Guia completo dos atalhos: ~/Obsidian/Projetos/Mac - Tiling WM (AeroSpace).md
+# Recarregar depois de editar: ⌥⇧; e depois Esc (modo serviço).
+# Documentação: https://nikitabobko.github.io/AeroSpace/guide
+
+config-version = 2
+
+start-at-login = true
+
+# Recarrega sozinho ao salvar este arquivo (como o Hyprland)
+auto-reload-config = true
+
+# Borda colorida na janela focada (JankyBorders). Se o borders não estiver
+# instalado, este comando só falha em silêncio.
+after-startup-command = [
+  'exec-and-forget /opt/homebrew/bin/borders active_color=0xff89b4fa inactive_color=0x00000000 width=5.0'
+]
+
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+accordion-padding = 30
+default-root-container-layout = 'tiles'
+default-root-container-orientation = 'auto'
+
+# Mouse segue o foco ao trocar de monitor
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+# Avisa o SketchyBar a cada troca de workspace (destaca o atual na barra)
+exec-on-workspace-change = ['/bin/bash', '-c',
+  '/opt/homebrew/bin/sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
+
+automatically-unhide-macos-hidden-apps = false
+
+# Workspaces 1–10 sempre existem, para o scroll e o next/prev andarem em ordem
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+
+# Atalhos pela posição física das teclas (QWERTY), funciona no ABNT2.
+[key-mapping]
+preset = 'qwerty'
+
+[gaps]
+inner.horizontal = 8
+inner.vertical   = 8
+outer.left       = 8
+outer.bottom     = 8
+outer.top        = 40   # 32 px da SketchyBar + 8 de espaço
+outer.right      = 8
+
+# ─────────────────────────── modo principal ───────────────────────────
+[mode.main.binding]
+# Apps (atalhos pessoais do usuário, 2026-11-10)
+alt-q = 'close --quit-if-last-window'             # Super+Q → fechar (encerra o app se for a última janela)
+# --new-window: abre uma janela nova no workspace atual, em vez de pular para a
+# janela antiga do Zen que está em outro workspace (o `open -a Zen` só ativava).
+alt-w = 'exec-and-forget open -na Zen --args --new-window'   # Super+W → navegador Zen
+alt-enter = 'exec-and-forget open -na Terminal'   # Super+Enter → terminal
+alt-e = 'exec-and-forget open ~'                  # Super+E → gerenciador de arquivos (Finder)
+
+# Layout
+alt-v = ['layout floating tiling', 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/arrange.sh']   # Super+V → alterna flutuante/tiling (e rearranja)
+alt-f = 'fullscreen'                              # tela cheia dentro do AeroSpace
+alt-t = 'layout tiles horizontal vertical'        # Super+J (togglesplit) → alterna divisão
+alt-a = 'layout accordion horizontal vertical'    # layout acordeão (abas empilhadas)
+
+# Foco (setas, como no Hyprland, e hjkl, estilo vim)
+alt-left  = 'focus left'
+alt-down  = 'focus down'
+alt-up    = 'focus up'
+alt-right = 'focus right'
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+
+# Mover janela
+alt-shift-left  = 'move left'
+alt-shift-down  = 'move down'
+alt-shift-up    = 'move up'
+alt-shift-right = 'move right'
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+
+# Redimensionar rápido
+alt-minus = 'resize smart -50'
+alt-equal = 'resize smart +50'
+
+# Workspaces 1–9
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+alt-0 = 'workspace 10'                            # Super+0 → workspace 10, como no Hyprland
+
+alt-shift-1 = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh 1'
+alt-shift-2 = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh 2'
+alt-shift-3 = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh 3'
+alt-shift-4 = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh 4'
+alt-shift-5 = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh 5'
+alt-shift-6 = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh 6'
+alt-shift-7 = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh 7'
+alt-shift-8 = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh 8'
+alt-shift-9 = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh 9'
+alt-shift-0 = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh 10'
+
+# Super+scroll é tratado pelo Hammerspoon (~/.hammerspoon/init.lua), que chama
+# `aerospace workspace --wrap-around prev|next`. Atalho de teclado equivalente:
+alt-comma  = 'workspace --wrap-around prev'
+alt-period = 'workspace --wrap-around next'
+
+# Workspace especial (scratchpad), como Super+S do Hyprland
+alt-s = 'workspace S'
+# (mandar janela para o S agora fica no modo serviço: ⌥⇧; e depois S)
+
+# Auto-arranjo mestre + pilha (~/.config/aerospace/arrange.sh)
+alt-shift-w = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh prev'      # Super+Shift+W → leva a janela à área da esquerda e rearranja
+alt-shift-s = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh next'      # Super+Shift+S → leva a janela à área da direita e rearranja
+alt-shift-enter = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/arrange.sh --promote'   # a janela focada vira o mestre (retângulo grande)
+# Rearranjar o workspace na mão: ⌥ + clique (feito no Hammerspoon, ~/.hammerspoon/init.lua)
+
+# Alternar com o workspace anterior
+alt-tab = 'workspace-back-and-forth'
+# Mandar o workspace inteiro para o outro monitor
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# Submapas
+alt-r = 'mode resize'                             # como o submap resize do Hyprland
+alt-shift-semicolon = 'mode service'              # recarregar config, resetar layout
+
+# ─────────────────────────── modo resize ───────────────────────────
+[mode.resize.binding]
+h = 'resize width -50'
+l = 'resize width +50'
+k = 'resize height -50'
+j = 'resize height +50'
+left  = 'resize width -50'
+right = 'resize width +50'
+up    = 'resize height -50'
+down  = 'resize height +50'
+b = 'balance-sizes'
+enter = 'mode main'
+esc = 'mode main'
+
+# ─────────────────────────── modo serviço ───────────────────────────
+[mode.service.binding]
+esc = ['reload-config', 'mode main']              # recarrega o ~/.aerospace.toml
+r = ['flatten-workspace-tree', 'mode main']       # reseta o layout do workspace
+s = ['exec-and-forget /Users/joaoscacchetti/.config/aerospace/move-and-arrange.sh S', 'mode main']   # manda a janela para o workspace especial S
+f = ['layout floating tiling', 'mode main']
+backspace = ['close-all-windows-but-current', 'mode main']
+alt-shift-h = ['join-with left', 'mode main']
+alt-shift-j = ['join-with down', 'mode main']
+alt-shift-k = ['join-with up', 'mode main']
+alt-shift-l = ['join-with right', 'mode main']
+
+# ─────────────────────────── regras de janela ───────────────────────────
+# Apps que ficam melhor flutuando (como windowrule = float no Hyprland)
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.calculator'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ActivityMonitor'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.archiveutility'
+run = 'layout floating'
+
+# Qualquer outra janela nova (precisa ficar por ÚLTIMO): rearranja o workspace
+# em mestre + pilha. As regras acima param aqui, então janelas flutuantes não disparam.
+[[on-window-detected]]
+if = 'true'
+run = 'exec-and-forget /Users/joaoscacchetti/.config/aerospace/arrange.sh'
